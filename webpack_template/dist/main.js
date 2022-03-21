@@ -1,8 +1,1 @@
-/******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
-var __webpack_exports__ = {};
-
-console.log("new text");
-
-/******/ })()
-;
+(()=>{"use strict";console.log("new text"),console.log("next text")})();
