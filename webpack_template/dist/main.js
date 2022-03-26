@@ -1,1 +1,1 @@
-(()=>{"use strict";console.log("new text"),console.log("next text")})();
+(()=>{"use strict";console.log("abc")})();

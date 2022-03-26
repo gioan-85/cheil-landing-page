@@ -1,3 +1,8 @@
 import "./css/style.scss";
-console.log("new text");
-console.log('next text');
+
+function testFunction (){
+    var text = 'abc';
+    console.log(text);
+}
+
+testFunction();

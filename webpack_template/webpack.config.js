@@ -3,12 +3,14 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
 var path = require('path');
 
 module.exports = {
   optimization: {
     minimizer: [
       new OptimizeCSSAssetsPlugin({}),
+      new TerserJSPlugin({}),
       new UglifyJsPlugin({
         test: /\.js(\?.*)?$/i,
       })
