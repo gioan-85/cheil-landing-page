@@ -2,19 +2,24 @@ import "./css/style.scss";
 
 // add more prod infos
 jQuery(document).ready(function (e) {
+    const maximumProd = 10;
+    const prodInfoTemp = $('.prod-info').clone();
+
+    function doData(json) {
+        console.log(json.feed.entry)
+    }
+
+    doData();
+
     $('#hero-banner-cta').click(function (e) {
         e.preventDefault()
         var scrollElement = $(this).data('scroll')
         if (scrollElement) {
             $('body, html').animate({
-            scrollTop: $('.' + scrollElement).position().top
+                scrollTop: $('.' + scrollElement).position().top
             }, 500)
         }
     })
-
-    const maximumProd = 10;
-    const prodInfoTemp = $('.prod-info').clone();
-    const prodBlank = $('.prod-blank').clone();
 
     function addMoreProdInfo() {
         var product_wrapper = $('.prod-infos-wrapper');
@@ -29,7 +34,7 @@ jQuery(document).ready(function (e) {
         product_wrapper.html(product_wrapper.html() + ele[0].outerHTML)
     }
 
-    $('.cta--addmore').click(function(e){
+    $('.cta--addmore').click(function (e) {
         e.preventDefault()
         addMoreProdInfo()
     })
@@ -178,6 +183,7 @@ jQuery(document).ready(function (e) {
 
                                         if (jqXHR.responseJSON == 'success') {
                                             $("#popupSuccess").fadeIn()
+                                            document.querySelector('body').classList.add('showPU')
                                             document.getElementById("register-form").reset()
                                             return
                                         }
@@ -236,6 +242,7 @@ jQuery(document).ready(function (e) {
     }),
 
         e("#popupSuccess .close-button, #popupSuccess .dimmer, #popupSuccess .cta--close-pu").on("click", function (r) {
+            document.querySelector('body').classList.remove('showPU')
             r.preventDefault(), e("#popupSuccess").fadeOut()
         })
 });

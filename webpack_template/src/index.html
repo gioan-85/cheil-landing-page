@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="https://www.samsung.com/etc.clientlibs/samsung/clientlibs/consumer/global/clientlib-base.min.7b3ee95f56fe51e2f507e7c41d2736f3.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.4/sweetalert2.all.js" integrity="sha512-aYkxNMS1BrFK2pwC53ea1bO8key+6qLChadZfRk8FtHt36OBqoKX8cnkcYWLs1BR5sqgjU5SMIMYNa85lZWzAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://www.google.com/recaptcha/api.js?render=6LeYzwgfAAAAAH8970TxAt7M0lMefol3WSnlSwIJ"></script>
@@ -5,10 +6,10 @@
 <section class="register">
     <h2 class="registar-header">Đăng ký ngay</h2>
     <div class="container">
-        <div class="registar-description">
+        <!-- <div class="registar-description">
             Thông tin chỉ được gửi đến khách hàng trên 17 tuổi.<br>
             Vui lòng cập nhật chính xác để nhận những ưu đãi mới nhất.
-        </div>
+        </div> -->
         <form id="register-form">
             <p class="form-note">Các trường đánh dấu (*) là bắt buộc.</p>
             <p class="form-header">Thông tin đơn hàng</p>
@@ -38,32 +39,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="prod-blank"></div>
             </div>
             <p class="form-note">
-                <a href="javascript:void(0)" class="cta cta--outlined cta--black cta--addmore">THÊM SẢN PHẨM</a><br>
-                Xem hướng dẫn tìm Mã sản phẩm và Số Seri <a href="javascript:void(0)">tại đây</a>.<br>
+                <a href="javascript:void(0)" class="cta--addmore">THÊM SẢN PHẨM</a><br>
+                Xem hướng dẫn tìm Mã sản phẩm và Số Seri <a href="https://www.samsung.com/vn/support/home-appliances/how-to-find-serial-and-model-of-ha/" target="_blank">tại đây</a>.<br>
             </p>
             <p class="form-header">Thông tin khách hàng</p>
-            <div class="form-submit-row form-submit-row__two-col">
+            <div class="form-submit-row">
                 <div class="form-submit__group form-submit__group--firstname" data-field-name="lastName">
                     <div class="form-submit__input">
                         <div class="text-wrapper">
-                            <label class="label" for="lastName" data-required="">Họ</label>
+                            <label class="label" for="lastName" data-required="">Họ & Tên</label>
                         </div>
                         <input type="text" id="lastName" name="lastName" placeholder="Nguyễn Văn" autocomplete="" required>
                     </div>
                     <div class="form-submit__error"><span>Vui lòng nhập họ</span></div>
-                </div>
-
-                <div class="form-submit__group form-submit__group--lastname" data-field-name="firstName">
-                    <div class="form-submit__input">
-                        <div class="text-wrapper">
-                            <label class="label" for="firstName" data-required="">Tên</label>
-                        </div>
-                        <input type="text" id="firstName" name="firstName" placeholder="A" autocomplete="" required>
-                    </div>
-                    <div class="form-submit__error"><span>Vui lòng nhập tên</span></div>
                 </div>
             </div>
 
@@ -83,12 +73,12 @@
                 <div class="form-submit__group" data-field-name="phoneNumber">
                     <div class="form-submit__input">
                         <div class="text-wrapper">
-                            <label class="label" for="phoneNumber" data-required="">Số điện
-                                thoại</label>
+                            <label class="label" for="phoneNumber" data-required="">Số điện thoại</label>
                         </div>
                         <input type="number" id="phoneNumber" name="phoneNumber" placeholder="098 765 4321" autocomplete="" onkeypress="javascript:return isNumber(event)" maxlength="14" required>
                     </div>
                     <div class="form-submit__error"><span></span></div>
+                    <div class="form-submit__note">(Vui lòng dùng số điện thoại đã kích hoạt bảo hành)</div>
                 </div>
             </div>
 
@@ -105,8 +95,8 @@
                 </div>
             </div>
 
-            <div class="form-submit-row form-submit-row--mb-15">
-                <div class="form-submit__group form-submit__group100" data-field-name="receiveEmail">
+            <div class="form-submit-row">
+                <div class="form-submit__group form-submit__group--confirm" data-field-name="receiveEmail">
                     <div class="form-submit__input form-submit--confirm">
                         <div class="confirm--line">
                             <input type="checkbox" id="receiveEmail" name="receiveEmail" checked>
@@ -124,7 +114,7 @@
             </div>
 
             <div class="form-submit-row">
-                <div class="form-submit__group form-submit__group100" data-field-name="policy">
+                <div class="form-submit__group form-submit__group--confirm" data-field-name="policy">
                     <div class="form-submit__input form-submit--confirm">
                         <div class="confirm--line">
                             <input type="checkbox" id="policy" name="policy" checked>
@@ -139,15 +129,11 @@
                 </div>
             </div>
 
-            <div class="form-submit-row form-submit-row__note form-submit-row__note--bg">
+            <!-- <div class="form-submit-row form-submit-row__note form-submit-row__note--bg">
                 <p>Để giúp khách hàng có thể lựa chọn sản phẩm phù hợp nhất với nhu cầu, tài chính
                     có
                     sẵn và nhận ưu đãi tốt nhất, khách hàng vui lòng điền thông tin bên dưới</p>
-            </div>
-
-            <div class="form-submit__group" data-field-name="referrerUrl">
-                <input type="text" id="referrerUrl" name="referrerUrl" hidden>
-            </div>
+            </div> -->
 
 
             <div class="form-submit__group form-submit__group--btn">
@@ -248,3 +234,4 @@
         }; a.jMaskGlobals = a.jMaskGlobals || {}; k = a.jMaskGlobals = a.extend(!0, {}, k, a.jMaskGlobals); k.dataMask && a.applyDataMask(); setInterval(function () { a.jMaskGlobals.watchDataMask && a.applyDataMask() }, k.watchInterval)
     }, window.jQuery, window.Zepto);
 </script>
+<script src="https://spreadsheets.google.com/feeds/cells/16pBjN22sajxTGAkPnrRaNHhZ9pTRFMKQ/public/values?alt=json-in-script&callback=doData"></script>
