@@ -191,9 +191,56 @@
                 position: relative;
             }
 
+            .input-wrapper {
+                flex: 1;
+                position: relative;
+
+                &.deactived {
+                    .suggest-list {
+                        display: none;
+                    }
+                }
+            }
+            .autocomplete-items,
+            .suggest-list {
+                position: absolute;
+                top: calc(100% + 1px);
+                left: 0;
+                width: 100%;
+                background: #fff;
+                max-height: 200px;
+                overflow: auto;
+                border: none;
+                z-index: 2;
+
+                div {
+                    width: 100%;
+                    height: 44px;
+                    display: inline-flex;
+                    align-items: center;
+                    border: 1px solid #00000010;
+                    border-bottom: 0;
+
+                    &:hover {
+                        background: #00000010;
+                    }
+
+                    &:last-child {
+                        border-bottom: 1px solid #00000010;
+                    }
+                }
+
+                &.actived {
+                    display: block;
+                }
+            }
+
+            
+
             input {
                 border: none;
                 flex: 1;
+                width: 100%;
 
                 &:focus {
                     box-shadow: none;
@@ -206,7 +253,6 @@
                     background: transparent;
                     border: none;
                     border-radius: 0;
-                    flex: 1;
                     font-family: SamsungOne, Arial;
                     font-size: 18px;
                     padding: 0;
@@ -266,6 +312,10 @@
                         white-space: normal
                     }
                 }
+
+                &.input-prodId {
+                    text-transform: uppercase;
+                }
             }
 
             &.form-submit--confirm {
@@ -291,10 +341,26 @@
                 }
 
                 label.label[data-required]:after {
-                    color: red;
+                    color: #000;
                     content: "*";
                     display: inline;
-                    margin-left: 5px
+                }
+
+                label.label[data-question]:after {
+                    background: #000;
+                    content: '?';
+                    color: #fff;
+                    font-size: 0.5em;
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 1em;
+                    height: 1em;
+                    border-radius: 100%;
+                    padding: 0.2em;
+                    position: relative;
+                    bottom: 0.3em;
+                    margin-left: 8px;
                 }
             }
         }

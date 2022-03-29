@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" href="https://www.samsung.com/etc.clientlibs/samsung/clientlibs/consumer/global/clientlib-base.min.7b3ee95f56fe51e2f507e7c41d2736f3.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.4/sweetalert2.all.js" integrity="sha512-aYkxNMS1BrFK2pwC53ea1bO8key+6qLChadZfRk8FtHt36OBqoKX8cnkcYWLs1BR5sqgjU5SMIMYNa85lZWzAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://www.google.com/recaptcha/api.js?render=6LeYzwgfAAAAAH8970TxAt7M0lMefol3WSnlSwIJ"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=6Le63wsfAAAAAN4smYVhVuJpNZJZxhE1G438sWa4"></script>
 
 <section class="register">
     <h2 class="registar-header">Đăng ký ngay</h2>
@@ -20,22 +20,26 @@
                         <div class="form-submit__group" data-field-name="email">
                             <div class="form-submit__input">
                                 <div class="text-wrapper">
-                                    <label class="label" data-required>Mã sản phẩm</label>
+                                    <label class="label" data-question>Mã sản phẩm *</label>
                                 </div>
-                                <input type="text" placeholder="" autocomplete="" required>
+                                <div class="input-wrapper">
+                                    <input type="text" class="input-prodId" placeholder="" autocomplete="" required data-select="prodId-1">
+                                </div>
                             </div>
-                            <div class="form-submit__error"><span>Mã sản phẩm/Số Seri không đúng, Bạn vui lòng nhập lại</span></div>
+                            <div class="form-submit__error"><span>Mã sản phẩm không đúng, Bạn vui lòng nhập lại</span></div>
                         </div>
                     </div>
                     <div class="form-submit-row">
                         <div class="form-submit__group" data-field-name="email">
                             <div class="form-submit__input">
                                 <div class="text-wrapper">
-                                    <label class="label" data-required>Số seri</label>
+                                    <label class="label" data-question>Số seri *</label>
                                 </div>
-                                <input type="text" placeholder="" autocomplete="" required>
+                                <div class="input-wrapper">
+                                    <input class="input-seri" type="text" placeholder="" autocomplete="" required maxLength="14">
+                                </div>
                             </div>
-                            <div class="form-submit__error"><span></span></div>
+                            <div class="form-submit__error"><span>Số Seri không đúng, Bạn vui lòng nhập lại</span></div>
                         </div>
                     </div>
                 </div>
@@ -45,15 +49,25 @@
                 Xem hướng dẫn tìm Mã sản phẩm và Số Seri <a href="https://www.samsung.com/vn/support/home-appliances/how-to-find-serial-and-model-of-ha/" target="_blank">tại đây</a>.<br>
             </p>
             <p class="form-header">Thông tin khách hàng</p>
-            <div class="form-submit-row">
+            <div class="form-submit-row form-submit-row__two-col">
                 <div class="form-submit__group form-submit__group--firstname" data-field-name="lastName">
                     <div class="form-submit__input">
                         <div class="text-wrapper">
-                            <label class="label" for="lastName" data-required="">Họ & Tên</label>
+                            <label class="label" for="lastName" data-required="">Họ</label>
                         </div>
                         <input type="text" id="lastName" name="lastName" placeholder="Nguyễn Văn" autocomplete="" required>
                     </div>
                     <div class="form-submit__error"><span>Vui lòng nhập họ</span></div>
+                </div>
+
+                <div class="form-submit__group form-submit__group--lastname" data-field-name="firstName">
+                    <div class="form-submit__input">
+                        <div class="text-wrapper">
+                            <label class="label" for="firstName" data-required="">Tên</label>
+                        </div>
+                        <input type="text" id="firstName" name="firstName" placeholder="A" autocomplete="" required>
+                    </div>
+                    <div class="form-submit__error"><span>Vui lòng nhập tên</span></div>
                 </div>
             </div>
 
@@ -75,7 +89,7 @@
                         <div class="text-wrapper">
                             <label class="label" for="phoneNumber" data-required="">Số điện thoại</label>
                         </div>
-                        <input type="number" id="phoneNumber" name="phoneNumber" placeholder="098 765 4321" autocomplete="" onkeypress="javascript:return isNumber(event)" maxlength="14" required>
+                        <input type="number" id="phoneNumber" name="phoneNumber" placeholder="098 765 4321" autocomplete="" maxlength="14" required>
                     </div>
                     <div class="form-submit__error"><span></span></div>
                     <div class="form-submit__note">(Vui lòng dùng số điện thoại đã kích hoạt bảo hành)</div>
@@ -234,4 +248,4 @@
         }; a.jMaskGlobals = a.jMaskGlobals || {}; k = a.jMaskGlobals = a.extend(!0, {}, k, a.jMaskGlobals); k.dataMask && a.applyDataMask(); setInterval(function () { a.jMaskGlobals.watchDataMask && a.applyDataMask() }, k.watchInterval)
     }, window.jQuery, window.Zepto);
 </script>
-<script src="https://spreadsheets.google.com/feeds/cells/16pBjN22sajxTGAkPnrRaNHhZ9pTRFMKQ/public/values?alt=json-in-script&callback=doData"></script>
+<!-- <script src="https://spreadsheets.google.com/feeds/cells/16pBjN22sajxTGAkPnrRaNHhZ9pTRFMKQ/public/values?alt=json-in-script&callback=doData"></script> -->
