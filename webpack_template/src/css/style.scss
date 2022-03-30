@@ -33,7 +33,20 @@
         }
 
         .form-note {
-            margin: 0 0 20px
+            margin: 0 0 20px;
+            width: 100%;
+
+            p.center {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                margin-bottom: 10px;
+
+                .cta--removeOne {
+                    margin-left: 10px;
+                    display: none;
+                }
+            }
         }
 
         .form-header {
@@ -57,18 +70,6 @@
             font-size: 20px;
             font-family: SamsungSharpSans, arial, sans-serif;
             margin-bottom: 10px;
-        }
-
-        .cta--addmore {
-            margin-bottom: 10px;
-            font-family: SamsungSharpSans, arial, sans-serif;
-            font-size: 15px;
-            padding: 0.5em;
-            border: 1px solid #000;
-            border-radius: 5rem;
-            line-height: 1em;
-            color: #000;
-            display: inline-block;
         }
     }
 
@@ -577,6 +578,17 @@ body.showPU {
         .container {
             padding-top: 15px;
             padding-bottom: 15px;
+
+            p.center {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                margin-bottom: 0;
+
+                .cta {
+                    margin: 0 5px 10px;
+                }
+            }
         }
         // .registar-header {
         //     font-size: 24px

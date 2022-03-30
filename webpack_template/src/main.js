@@ -271,6 +271,7 @@ jQuery(document).ready(function (e) {
         ele.attr('data-id', product_info_length);
         ele.find('.prod-header span').text(product_info_length)
         product_wrapper.html(product_wrapper.html() + ele[0].outerHTML)
+        $('.cta--removeOne').fadeIn(300);
 
         validateProdId();
         validateSeriNumber();
@@ -280,6 +281,17 @@ jQuery(document).ready(function (e) {
         e.preventDefault()
         addMoreProdInfo()
     });
+
+    $('.cta--removeOne').click(function(e) {
+        e.preventDefault();
+        if ($('.prod-info').length == 2) {
+            $('.prod-info').eq(1).remove();
+            $(this).fadeOut(300);
+            return;
+        } else {
+            $('.prod-info').eq($('.prod-info').length - 1).remove();
+        }
+    })
 
     // $('input.input-prodId').keyup(function (){
     //     var selectList = $(this).data('select');

@@ -20,10 +20,10 @@
                         <div class="form-submit__group" data-field-name="email">
                             <div class="form-submit__input">
                                 <div class="text-wrapper">
-                                    <label class="label" data-question>Mã sản phẩm *</label>
+                                    <label class="label">Mã sản phẩm *</label>
                                 </div>
                                 <div class="input-wrapper">
-                                    <input type="text" class="input-prodId" placeholder="" autocomplete="" required data-select="prodId-1">
+                                    <input type="text" class="input-prodId" placeholder="" autocomplete="" required data-select="prodId-1" maxLength="14">
                                 </div>
                             </div>
                             <div class="form-submit__error"><span>Mã sản phẩm không đúng, Bạn vui lòng nhập lại</span></div>
@@ -33,7 +33,7 @@
                         <div class="form-submit__group" data-field-name="email">
                             <div class="form-submit__input">
                                 <div class="text-wrapper">
-                                    <label class="label" data-question>Số seri *</label>
+                                    <label class="label">Số seri *</label>
                                 </div>
                                 <div class="input-wrapper">
                                     <input class="input-seri" type="text" placeholder="" autocomplete="" required maxLength="14">
@@ -44,10 +44,13 @@
                     </div>
                 </div>
             </div>
-            <p class="form-note">
-                <a href="javascript:void(0)" class="cta--addmore">THÊM SẢN PHẨM</a><br>
+            <div class="form-note">
+                <p class="center">
+                    <a href="javascript:void(0)" class="cta cta--outlined cta--black cta--addmore">Thêm sản phẩm</a>
+                    <a href="javascript:void(0)" class="cta cta--outlined cta--black cta--removeOne">Bớt sản phẩm</a>
+                </p>
                 Xem hướng dẫn tìm Mã sản phẩm và Số Seri <a href="https://www.samsung.com/vn/support/home-appliances/how-to-find-serial-and-model-of-ha/" target="_blank">tại đây</a>.<br>
-            </p>
+            </div>
             <p class="form-header">Thông tin khách hàng</p>
             <div class="form-submit-row form-submit-row__two-col">
                 <div class="form-submit__group form-submit__group--firstname" data-field-name="lastName">
