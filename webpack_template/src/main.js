@@ -267,10 +267,29 @@ jQuery(document).ready(function (e) {
             return;
         product_info_length++
 
+        // capture prod info value
+        let prodInfoCapture = []
+        $('.prod-info').each(function(i,e) {
+            let temp = {
+                prodId : $(this).find('.input-prodId').val(),
+                prodSeri: $(this).find('.input-seri').val()
+            }
+            prodInfoCapture.push(temp)
+        })
+
         let ele = prodInfoTemp;
         ele.attr('data-id', product_info_length);
         ele.find('.prod-header span').text(product_info_length)
         product_wrapper.html(product_wrapper.html() + ele[0].outerHTML)
+
+        //update prod info value
+        $('.prod-info').each(function(i,e) {
+            if (prodInfoCapture[i]) {
+                $(this).find('.input-prodId').val(prodInfoCapture[i].prodId)
+                $(this).find('.input-seri').val(prodInfoCapture[i].prodSeri)
+            }
+        })
+
         $('.cta--removeOne').fadeIn(300);
 
         validateProdId();
