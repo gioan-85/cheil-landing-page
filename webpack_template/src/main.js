@@ -219,9 +219,12 @@ function validateSeriNumber () {
     let error = null;
     $('.input-seri').each(function(i,e) {
         $(this).bind('blur', function(){
-            !$(this).val() || $(this).val().length < 14 ? ($(this).closest('.form-submit__group').addClass('has-error'), error=true) : ($(this).closest('.form-submit__group').removeClass('has-error'), error=false)
+            let val = $(this).val()
+            console.log(val.replace(/[0-9]/g,"").length)
+            !val || val.length < 14 || val.replace(/[0-9]/g,"").length == val.length || val.replace(/[0-9]/g,"").length == 0 ? ($(this).closest('.form-submit__group').addClass('has-error'), error=true) : ($(this).closest('.form-submit__group').removeClass('has-error'), error=false)
         })
     })
+    console.log(error)
     return error;
 }
 
@@ -489,8 +492,6 @@ jQuery(document).ready(function (e) {
                                     url: r.ReferrerUrl,
                                     medium: r.medium,
                                     gRecaptchaResponse: r.grecaptchaToken,
-                                    product: r.product,
-                                    priceRange: r.priceRange,
                                     order: r.order
                                 }),
                                 success: function (data, textStatus, jqXHR) {
@@ -545,8 +546,6 @@ jQuery(document).ready(function (e) {
                             ReferrerUrl: window.location.href,
                             grecaptchaToken: r,
                             gender: '',
-                            product: e('#productName').val(),
-                            priceRange: e('#productRange').val(),
                             medium: window.location.search.replace('?', ''),
                             order: formOrder
                         })
