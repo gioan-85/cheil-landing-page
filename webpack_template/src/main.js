@@ -1,206 +1,398 @@
-import "./css/style.scss";
+import './css/style.scss'
 
-jQuery(document).ready(function (e) {
+jQuery(document).ready(function ($) {
+  let $FirstName = $('#firstName'),
+    $LastName = $('#lastName'),
+    $BirthDay = $('#dateOfBirth'),
+    $Email = $('#email'),
+    $Phone = $('#phoneNumber'),
+    $Policy = $('#policy'),
+    $ReceiveEmail = $('#receiveEmail')
 
-    let r = e("#firstName"),
-        a = e("#lastName"),
-        t = e("#dateOfBirth"),
-        s = e("#email"),
-        n = e("#phoneNumber");
-    const o = ".form-submit__group";
+  const o = '.form-submit__group'
+  const spanErrorText = '.form-submit__error span'
+  const sitekey = '6Lealo4gAAAAABbhvQqHjXlINIDAg2WLdc8pgQer'
 
-    const i = "https://vn-2022-da-gcdm-registration-campaign-11447-stg.azurewebsites.net/api/User/insertUser";
+  const i =
+    'https://vn-2022-da-gcdm-registration-campaign-11447-stg.azurewebsites.net/api/User/insertUser'
+  const formCode = 'da_gcdm_registration'
 
-    function isNumber(e) {
-        var r = e.which ? e.which : event.keyCode;
-        return !(r > 31 && (r < 48 || r > 57))
+  $('#reCaptchaV2, #jsSubmit').data('sitekey', sitekey)
+
+  function isNumber (e) {
+    var r = e.which ? e.which : event.keyCode
+    return !(r > 31 && (r < 48 || r > 57))
+  }
+
+  function isChecked (checkbox) {
+    checkbox.is(':checked')
+      ? checkbox.parents(o).removeClass('has-error')
+      : checkbox.parents(o).addClass('has-error')
+
+    return checkbox.is(':checked') ? true : false
+  }
+
+  function validateName (name) {
+    name
+      .parents(o)
+      .find('.errorMsg__1')
+      .show()
+
+    if (name.val() && Number(name.val().length) > 1) {
+      if (allCharactersSame(name.val())) {
+        name
+          .parents(o)
+          .find('span')
+          .hide()
+        name
+          .parents(o)
+          .find('.errorMsg__2')
+          .show()
+        name.parents(o).addClass('has-error')
+        return false
+      } else {
+        name.parents(o).removeClass('has-error')
+        return true
+      }
+    } else {
+      name
+        .parents(o)
+        .find('.errorMsg__1')
+        .show()
+      name.parents(o).addClass('has-error')
+      return false
     }
+  }
 
-    function validateEmail(e) {
-        return /\S+@\S+\.\S+/.test(e)
+  function allCharactersSame (s) {
+    let n = s.length
+    for (let i = 1; i < n; i++) if (s[i] != s[0]) return false
+    return true
+  }
+
+  function validateEmail (email) {
+    let isEmail = /\S+@\S+\.\S+/.test(email.val())
+
+    email.val() && isEmail
+      ? email.parents(o).removeClass('has-error')
+      : email.val()
+      ? $Email
+          .parents(o)
+          .addClass('has-error')
+          .find(spanErrorText)
+          .text('Email không đúng định dạng')
+      : email
+          .parents(o)
+          .addClass('has-error')
+          .find(spanErrorText)
+          .text('Vui lòng nhập email')
+    return isEmail
+  }
+
+  function ValidateDate (date) {
+    let isDate = /(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$/.test(
+      date.val()
+    )
+
+    date.val() && isDate
+      ? date.parents(o).removeClass('has-error')
+      : date.val()
+      ? date
+          .parents(o)
+          .addClass('has-error')
+          .find(spanErrorText)
+          .text('Ngày sinh không đúng định dạng')
+      : date
+          .parents(o)
+          .addClass('has-error')
+          .find(spanErrorText)
+          .text('Vui lòng nhập ngày sinh')
+    return isDate
+  }
+
+  function validatePhoneNumber (phone) {
+    let $PhoneNumber = phone.val()
+
+    if ($PhoneNumber) {
+      if ($PhoneNumber.length <= 9) {
+        phone
+          .parents(o)
+          .addClass('has-error')
+          .find(spanErrorText)
+          .text('Số điện thoại không đúng định dạng')
+        return false
+      }
+      if ('0' === $PhoneNumber.substring(0, 1))
+        $PhoneNumber = $PhoneNumber.substring(1, $PhoneNumber.length)
+      else {
+        '840' === $PhoneNumber.substring(0, 3) &&
+          ($PhoneNumber = $PhoneNumber.substring(3, $PhoneNumber.length))
+        '84' === $PhoneNumber.substring(0, 2) &&
+          ($PhoneNumber = $PhoneNumber.substring(2, $PhoneNumber.length))
+      }
+      phone.parents(o).removeClass('has-error')
+      phone.val('84' + $PhoneNumber)
+      return true
+    } else {
+      phone
+        .parents(o)
+        .addClass('has-error')
+        .find(spanErrorText)
+        .text('Vui lòng nhập số điện thoại')
+      return false
     }
+  }
 
-    function ValidateDate(dtValue) {
-        return /(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$/.test(dtValue)
-    }
+  function validateForm () {
+    let errorCount = 0
 
+    validateName($FirstName) ? true : errorCount++
+    validateName($LastName) ? true : errorCount++
+    validateEmail($Email) ? true : errorCount++
+    ValidateDate($BirthDay) ? true : errorCount++
+    validatePhoneNumber($Phone) ? true : errorCount++
+    console.log(errorCount)
+    return errorCount
+  }
 
-    r.on("focusout", function () {
-        r.val() ? r.parents(o).removeClass("has-error") : r.parents(o).addClass("has-error")
-    })
+  $FirstName.alphanum({
+    allowSpace: true,
+    allowUpper: true,
+    allowNumeric: false,
+    allowOtherCharSets: true
+  })
 
-    a.on("focusout", function () {
-        a.val() ? a.parents(o).removeClass("has-error") : a.parents(o).addClass("has-error")
-    })
+  $FirstName.alphanum({
+    allowSpace: true,
+    allowUpper: true,
+    allowNumeric: false,
+    allowOtherCharSets: true
+  })
 
-    s.on("focusout", function () {
-        s.val() ? 0 == validateEmail(s.val()) ? s.parents(o).addClass("has-error").find(".form-submit__error span").text("Email không đúng định dạng") : s.parents(o).removeClass("has-error") : s.parents(o).addClass("has-error").find(".form-submit__error span").text("Vui lòng nhập email")
-    })
+  $FirstName.on('focusout', function () {
+    validateName($FirstName)
+  })
 
-    t.on("focusout", function () {
-        t.val() ? !ValidateDate(t.val()) ? t.parents(o).addClass('has-error').find(".form-submit__error span").text("Ngày sinh không đúng định dạng") : t.parents(o).removeClass("has-error") : t.parents(o).addClass("has-error").find(".form-submit__error span").text("Vui lòng nhập ngày sinh")
-    })
+  $LastName.on('focusout', function () {
+    validateName($LastName)
+  })
 
-    $("#dateOfBirth").keyup(function () {
-        e("#dateOfBirth").mask("00/00/0000")
-    })
+  $Email.on('focusout', function () {
+    validateEmail($Email)
+  })
 
-    n.on("focusout", function () {
-        this.value.length;
-        let e = n.val(),
-            r = e.substring(0, 1),
-            a = e.substring(0, 3);
+  $BirthDay.on('focusout', function () {
+    ValidateDate($BirthDay)
+  })
 
-        if (n.val()) {
-            let t = n.val();
-            if ("0" === r)
-                e = e.substring(1, e.length);
-            else {
-                "840" === a && (e = e.substring(3, e.length)),
-                    "84" === e.substring(0, 2) && (e = e.substring(2, e.length))
+  $BirthDay.keyup(function () {
+    $BirthDay.mask('00/00/0000')
+  })
+
+  $Phone.on('focusout', function () {
+    validatePhoneNumber($Phone)
+  })
+
+  $Policy.on('change', function () {
+    isChecked($Policy)
+  })
+
+  $ReceiveEmail.on('change', function () {
+    isChecked($ReceiveEmail)
+  })
+
+  $('#jsSubmit').click(function (l) {
+    l.preventDefault()
+    var d = validateForm()
+    let p = window.location.href
+
+    if (d > 0) return
+
+    $('#jsSubmit')
+      .addClass('loading')
+      .prop('disabled', true)
+
+    var captchaResponse = grecaptcha.getResponse()
+    if (captchaResponse.length > 0) {
+      $('#jsSubmit')
+        .addClass('loading')
+        .prop('disabled', true)
+
+      $('.recaptcha-message').slideUp()
+      $.ajax({
+        url: i,
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+          'Access-Control-Allow-Headers': '*'
+        },
+        data: JSON.stringify({
+          FormCode: formCode,
+          lastName: $LastName.val(),
+          firstName: $FirstName.val(),
+          email: $Email.val(),
+          phoneNumber: $Phone.val(),
+          gender: '',
+          dateOfBirth: $BirthDay.val(),
+          url: window.location.href,
+          medium: window.location.search.replace('?', ''),
+          gRecaptchaResponse: captchaResponse
+        }),
+        success: function (data, textStatus, jqXHR) {
+          console.log(data)
+          console.log(jqXHR)
+          if (jqXHR.status == 200) {
+            var error_message = ''
+
+            $('#jsSubmit')
+              .removeClass('loading')
+              .prop('disabled', !1)
+
+            if (jqXHR.responseJSON == 'success') {
+              $('#popupSuccess').fadeIn()
+              document.getElementById('register').reset()
+              general_tag()
+              return
             }
 
-            n.val("84" + e), (t = n.val()) ? n.parents(o).removeClass("has-error") : n.parents(o).addClass("has-error").find(".form-submit__error span").text("Số điện thoại không đúng định dạng")
+            if (
+              jqXHR.responseJSON == 'invalidToken' ||
+              jqXHR.responseJSON == 'invalidData'
+            ) {
+              error_message = 'Có lỗi xảy ra, vui lòng thử lại!'
+            }
+            if (jqXHR.responseJSON == 'duplicateEmail') {
+              error_message =
+                'Email này đã được sử dụng, vui lòng kiểm tra lại thông tin!'
+            }
+            if (jqXHR.responseJSON == 'duplicatePhone') {
+              error_message =
+                'Số điện thoại này đã được sử dụng, vui lòng kiểm tra lại thông tin!'
+            }
 
-        } else
-            n.parents(o).addClass("has-error").find(".form-submit__error span").text("Vui lòng nhập số điện thoại")
-    })
-
-    e("#policy").on("change", function () {
-        e("#policy").is(":checked") ? e("#policy").parents(o).removeClass("has-error") : e("#policy").parents(o).addClass("has-error")
-    })
-
-    e("#receiveEmail").on("change", function () {
-        e("#receiveEmail").is(":checked") ? e("#receiveEmail").parents(o).removeClass("has-error") : e("#receiveEmail").parents(o).addClass("has-error")
-    })
-
-    e("#jsSubmit").click(function (l) {
-        l.preventDefault();
-
-        e("#jsSubmit").addClass("loading").prop("disabled", true)
-
-        var d = 0;
-        let p = window.location.href;
-        if (r.val() ? r.parents(o).removeClass("has-error") : (r.parents(o).addClass("has-error"), d++),
-            a.val() ? a.parents(o).removeClass("has-error") : (a.parents(o).addClass("has-error"), d++),
-            e("#policy").is(":checked") ? e("#policy").parents(o).removeClass("has-error") : (e("#policy").parents(o).addClass("has-error"), d++),
-            e("#receiveEmail").is(":checked") ? e("#receiveEmail").parents(o).removeClass("has-error") : (e("#receiveEmail").parents(o).addClass("has-error"), d++),
-            s.val() ? 0 == validateEmail(s.val()) ? (s.parents(o).addClass("has-error").find(".form-submit__error span").text("Email không đúng định dạng"), d++) : s.parents(o).removeClass("has-error") : (s.parents(o).addClass("has-error").find(".form-submit__error span").text("Vui lòng nhập email"), d++),
-            t.val() ? !ValidateDate(t.val()) ? (t.parents(o).addClass('has-error').find(".form-submit__error span").text("Ngày sinh không đúng định dạng"), d++) : t.parents(o).removeClass("has-error") : (t.parents(o).addClass("has-error").find(".form-submit__error span").text("Vui lòng nhập ngày sinh"), d++),
-            n.val()) {
-            n.val();
-            n.parents(o).removeClass("has-error")
-        } else
-            n.parents(o).addClass("has-error").find(".form-submit__error span").text("Vui lòng nhập số điện thoại"), d++;
-
-        if (!t.val()) {
-            let e = t.val();
-            ValidateDate(e) || 0 == e.length ? (t.parents(o).addClass("has-error"), d++) : t.parents(o).removeClass("has-error")
-        }
-
-        if (d <= 0) {
-            grecaptcha.ready(function () {
-                grecaptcha.execute("6LdLz68eAAAAADOlXfLzagjvW9-qsRstASBEriI-", {
-                    action: "submit"
-                })
-                    .then(function (r) {
-                        ! function (r) {
-                            (new Date).toISOString().split(".")[0], window.location.href;
-
-                            $.ajax({
-                                url: i,
-                                method: "POST",
-                                timeout: 5000,
-                                headers: {
-                                    "content-type": "application/json",
-                                    "Access-Control-Allow-Origin": "*",
-                                    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-                                    "Access-Control-Allow-Headers": "*"
-                                },
-                                data: JSON.stringify({
-                                    FormCode: r.FormCode,
-                                    lastName: r.LastName,
-                                    firstName: r.FirstName,
-                                    email: r.Email,
-                                    phoneNumber: r.phoneNumber,
-                                    gender: r.gender,
-                                    dateOfBirth: r.BirthDay,
-                                    url: r.ReferrerUrl,
-                                    medium: r.medium,
-                                    gRecaptchaResponse: r.grecaptchaToken,
-                                    product: r.product,
-                                    priceRange: r.priceRange,
-
-                                }),
-                                success: function (data, textStatus, jqXHR) {
-                                    console.log(data)
-                                    console.log(jqXHR)
-                                    if (jqXHR.status == 200) {
-                                        var error_message = ''
-
-                                        $("#jsSubmit").removeClass("loading").prop("disabled", !1)
-
-                                        if (jqXHR.responseJSON == 'success') {
-                                            $("#popupSuccess").fadeIn()
-                                            document.getElementById("register").reset()
-                                            general_tag()
-                                            return
-                                        }
-
-                                        if (jqXHR.responseJSON == 'invalidToken' || jqXHR.responseJSON == 'invalidData') {
-                                            error_message = "Có lỗi xảy ra, vui lòng thử lại!"
-                                        }
-                                        if (jqXHR.responseJSON == 'duplicateEmail') {
-                                            error_message = "Email này đã được sử dụng, vui lòng kiểm tra lại thông tin!"
-                                        }
-                                        if (jqXHR.responseJSON == 'duplicatePhone') {
-                                            error_message = "Số điện thoại này đã được sử dụng, vui lòng kiểm tra lại thông tin!"
-                                        }
-
-                                        void Swal.fire({
-                                            icon: "error",
-                                            text: error_message,
-                                            confirmButtonText: "Đồng ý"
-                                        })
-
-                                    }
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    void Swal.fire({
-                                        icon: "error",
-                                        text: "Có lỗi xảy ra, vui lòng thử lại!",
-                                        confirmButtonText: "Đồng ý"
-                                    })
-
-                                    e("#jsSubmit").removeClass("loading").prop("disabled", !1);
-                                }
-                            })
-
-                        }({
-                            FormCode: 'da_gcdm_registration',
-                            FirstName: e("#firstName").val(),
-                            LastName: e("#lastName").val(),
-                            BirthDay: e("#dateOfBirth").val(),
-                            Email: e("#email").val(),
-                            phoneNumber: e("#phoneNumber").val(),
-                            ReferrerUrl: window.location.href,
-                            grecaptchaToken: r,
-                            gender: '',
-                            formCode: 'default',
-                            product: e('#productName').val(),
-                            priceRange: e('#productRange').val(),
-                            medium: window.location.search.replace('?', '')
-                        })
-                    })
-
+            void Swal.fire({
+              icon: 'error',
+              text: error_message,
+              confirmButtonText: 'Đồng ý'
             })
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          void Swal.fire({
+            icon: 'error',
+            text: 'Có lỗi xảy ra, vui lòng thử lại!',
+            confirmButtonText: 'Đồng ý'
+          })
 
-        } else {
-            e("#jsSubmit").remove("loading").prop("disabled", false)
+          $('#jsSubmit')
+            .removeClass('loading')
+            .prop('disabled', !1)
         }
-    }),
+      })
+    } else {
+      $('.recaptcha-message').slideDown()
+    }
+    // grecaptcha.ready(function () {
+    //   grecaptcha
+    //     .execute(secretKey, {
+    //       action: 'submit'
+    //     })
+    //     .then(function (r) {
+    //       !(function (r) {
+    //         $.ajax({
+    //           url: i,
+    //           method: 'POST',
+    //           headers: {
+    //             'content-type': 'application/json',
+    //             'Access-Control-Allow-Origin': '*',
+    //             'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+    //             'Access-Control-Allow-Headers': '*'
+    //           },
+    //           data: JSON.stringify({
+    //             FormCode: r.FormCode,
+    //             lastName: r.LastName,
+    //             firstName: r.FirstName,
+    //             email: r.Email,
+    //             phoneNumber: r.phoneNumber,
+    //             gender: r.gender,
+    //             dateOfBirth: r.BirthDay,
+    //             url: r.ReferrerUrl,
+    //             medium: r.medium,
+    //             gRecaptchaResponse: r.grecaptchaToken
+    //           }),
+    //           success: function (data, textStatus, jqXHR) {
+    //             console.log(data)
+    //             console.log(jqXHR)
+    //             if (jqXHR.status == 200) {
+    //               var error_message = ''
 
-        e("#popupSuccess .close-button, #popupSuccess .dimmer, #popupSuccess .cta--close-pu").on("click", function (r) {
-            r.preventDefault(), e("#popupSuccess").fadeOut()
-        })
-});
+    //               $('#jsSubmit')
+    //                 .removeClass('loading')
+    //                 .prop('disabled', !1)
+
+    //               if (jqXHR.responseJSON == 'success') {
+    //                 $('#popupSuccess').fadeIn()
+    //                 document.getElementById('register').reset()
+    //                 general_tag()
+    //                 return
+    //               }
+
+    //               if (
+    //                 jqXHR.responseJSON == 'invalidToken' ||
+    //                 jqXHR.responseJSON == 'invalidData'
+    //               ) {
+    //                 error_message = 'Có lỗi xảy ra, vui lòng thử lại!'
+    //               }
+    //               if (jqXHR.responseJSON == 'duplicateEmail') {
+    //                 error_message =
+    //                   'Email này đã được sử dụng, vui lòng kiểm tra lại thông tin!'
+    //               }
+    //               if (jqXHR.responseJSON == 'duplicatePhone') {
+    //                 error_message =
+    //                   'Số điện thoại này đã được sử dụng, vui lòng kiểm tra lại thông tin!'
+    //               }
+
+    //               void Swal.fire({
+    //                 icon: 'error',
+    //                 text: error_message,
+    //                 confirmButtonText: 'Đồng ý'
+    //               })
+    //             }
+    //           },
+    //           error: function (jqXHR, textStatus, errorThrown) {
+    //             void Swal.fire({
+    //               icon: 'error',
+    //               text: 'Có lỗi xảy ra, vui lòng thử lại!',
+    //               confirmButtonText: 'Đồng ý'
+    //             })
+
+    //             $('#jsSubmit')
+    //               .removeClass('loading')
+    //               .prop('disabled', !1)
+    //           }
+    //         })
+    //       })({
+    //         FormCode: formCode,
+    //         FirstName: $FirstName.val(),
+    //         LastName: $Last.val(),
+    //         BirthDay: $BirthDay.val(),
+    //         Email: $Emai.val(),
+    //         phoneNumber: $Phone.val(),
+    //         ReferrerUrl: window.location.href,
+    //         grecaptchaToken: r,
+    //         gender: '',
+    //         medium: window.location.search.replace('?', '')
+    //       })
+    //     })
+    // })
+  })
+
+  $(
+    '#popupSuccess .close-button, #popupSuccess .dimmer, #popupSuccess .cta--close-pu'
+  ).on('click', function (r) {
+    r.preventDefault()
+    $('#popupSuccess').fadeOut()
+  })
+})
