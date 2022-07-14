@@ -13,16 +13,13 @@ jQuery(document).ready(function ($) {
   const spanErrorText = '.form-submit__error span'
   const sitekey = '6Lealo4gAAAAABbhvQqHjXlINIDAg2WLdc8pgQer'
 
-  const i =
-    'https://vn-2022-da-gcdm-registration-campaign-11447-stg.azurewebsites.net/api/User/insertUser'
+  const isQA = window.location.href.indexOf('p6-qa') != -1;
+  const i = 'https://vn-2022-da-gcdm-registration-campaign-11447-stg.azurewebsites.net/api/User/insertUser'
   const formCode = 'da_gcdm_registration'
+  // const saUrl = isQA ? "https://p6-qa.samsung.com/aemapi/v6/mysamsung/info?siteCode=vn" : "https://www.samsung.com/aemapi/v6/mysamsung/info?siteCode=vn";
+  const saUrl = `${isQA ? 'https://p6-qa.samsung.com': 'https://www.samsung.com'}/aemapi/v6/mysamsung/info?siteCode=vn`
 
   $('#reCaptchaV2, #jsSubmit').data('sitekey', sitekey)
-
-  function isNumber (e) {
-    var r = e.which ? e.which : event.keyCode
-    return !(r > 31 && (r < 48 || r > 57))
-  }
 
   function isChecked (checkbox) {
     checkbox.is(':checked')
@@ -33,21 +30,12 @@ jQuery(document).ready(function ($) {
   }
 
   function validateName (name) {
-    name
-      .parents(o)
-      .find('.errorMsg__1')
-      .show()
+    name.parents(o).find('.errorMsg__1').show()
 
     if (name.val() && Number(name.val().length) > 1) {
       if (allCharactersSame(name.val())) {
-        name
-          .parents(o)
-          .find('span')
-          .hide()
-        name
-          .parents(o)
-          .find('.errorMsg__2')
-          .show()
+        name.parents(o).find('span').hide()
+        name.parents(o).find('.errorMsg__2').show()
         name.parents(o).addClass('has-error')
         return false
       } else {
@@ -55,10 +43,7 @@ jQuery(document).ready(function ($) {
         return true
       }
     } else {
-      name
-        .parents(o)
-        .find('.errorMsg__1')
-        .show()
+      name.parents(o).find('.errorMsg__1').show()
       name.parents(o).addClass('has-error')
       return false
     }
@@ -155,6 +140,21 @@ jQuery(document).ready(function ($) {
     return errorCount
   }
 
+  async function getSAInfo() {
+    let requestSA = $.getJSON(saUrl, function(data) {
+      console.log(data)
+      if (data.resultData.mySamsung.basicInfo.email) {
+        $FirstName.val(decodeURIComponent(data.resultData.mySamsung.basicInfo.givenName));
+        $LastName.val(decodeURIComponent(data.resultData.mySamsung.basicInfo.familyName));
+        $Email.val(data.resultData.mySamsung.basicInfo.email);
+      }
+    }).always(function() {
+      return;
+    });
+  }
+
+  getSAInfo();
+
   $FirstName.alphanum({
     allowSpace: true,
     allowUpper: true,
@@ -162,7 +162,7 @@ jQuery(document).ready(function ($) {
     allowOtherCharSets: true
   })
 
-  $FirstName.alphanum({
+  $LastName.alphanum({
     allowSpace: true,
     allowUpper: true,
     allowNumeric: false,
