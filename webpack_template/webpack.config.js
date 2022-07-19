@@ -3,6 +3,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 var path = require('path');
 
 module.exports = {
@@ -24,6 +25,14 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: './css/style.css'
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+            from: path.resolve(__dirname, './src/images/'),
+            to: path.resolve(__dirname, './dist/images/')
+        }
+      ]
     })
   ],
   output: {
